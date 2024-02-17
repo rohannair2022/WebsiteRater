@@ -1,16 +1,22 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 import requests
-
 
 def color_contrast_helper(div):
     lst = []
-    for body in div.find_all():
-        font_color = body.get('style', '').split(';')[0].split(':')[-1].strip()
-        background_color = body.get('style', '').split(';')[1].split(':')[-1].strip()
-        lst.append([font_color, background_color])
-        for child in body.children:
-            lst.extend(color_contrast_helper(child))
-    return lst 
+    font_color = None
+    background_color = None
+    if isinstance(div, NavigableString):
+        return []
+    else:
+        background_color = div.get('background-color')
+        if div.find(text = True) is None:
+            return [background_color, None]
+        for i in div.find('',text=True).children:
+            font_color = i.get('color')
+            lst.append([font_color, background_color])
+            for child in div.children:
+                lst.extend(color_contrast_helper(child))
+    return lst    
 
 def color_contrast(lst):
     i = 0
@@ -28,8 +34,10 @@ def color_contrast(lst):
             luminance1 = 0.2126 * normalized_rgb1[0] + 0.7152 * normalized_rgb1[1] + 0.0722 * normalized_rgb1[2]
             luminance2 = 0.2126 * normalized_rgb2[0] + 0.7152 * normalized_rgb2[1] + 0.0722 * normalized_rgb2[2]
             sum += luminance1/luminance2
+
+        i += 1
             
-    return sum/i
+    return i
 
 # color
 def font_colour(div):
@@ -48,8 +56,6 @@ def font_colour(div):
 def bg_colour(div):
     bg_colours = []
     bg_elements = div.find_all(attrs={"background-color": True})
-    color_elements 
-
     for element in bg_elements:
         colour = element.get('color')
         # can call font_colour here to compare the current background colour and the text colour of the div here
@@ -75,5 +81,4 @@ def alt_texts(div):
 
 html_text = requests.get("https://webscraper.io/test-sites").text
 soup = BeautifulSoup(html_text, "lxml")
-divs = soup
-print(font_colour(divs))
+print(color_contrast(color_contrast_helper(soup)))
