@@ -31,20 +31,22 @@ def bg_colour(div):
     return bg_colours
 
 
+# First task - eqaution
 def alt_texts(div):
-    images_without_alt = []
+    total_image = 0
+    image_with_alt = 0
     images = div.find_all('img')
 
     for img in images:
-        if not img.get('alt'):
-            images_without_alt.append(img)
+        if img.get('alt'):
+            image_with_alt += 1 
+        total_image += 1
 
     # To tell the users of the bad images
-    return images_without_alt
+    return image_with_alt/total_image
 
 
 html_text = requests.get("https://webscraper.io/test-sites").text
 soup = BeautifulSoup(html_text, "lxml")
-# divs = soup.findAll('div')
-divs = soup.find('div')
+divs = soup
 print(font_colour(divs))
