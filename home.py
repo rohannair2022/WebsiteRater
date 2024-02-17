@@ -77,5 +77,4 @@ def getLinks(pageUrl):
                 print(newPage)
                 pages.add(newPage)
                 getLinks(newPage)
-                
 getLinks('')         
