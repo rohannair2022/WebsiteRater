@@ -13,8 +13,10 @@ from bs4 import BeautifulSoup
 
 try:
     html = urlretrieve('index.html')
+    print(html.read())
 except HTTPError as e:
     print(e)
+
 
 # For the paramter of Beaitiful soup we can either use html.parser or lxml 
 #lxml is useful for sites that have html code that is unfinished or not properly alligned.
@@ -46,4 +48,20 @@ for i in list_of_requried:
 for i in bs.find('table',{'id':'row_name'}).tr.next_siblings:
     print(i.get_text())
 
-print(html.read())
+
+# Checking if an image has alt text or not and giving it a score
+alt_text_score = 0
+alt_text_total_score = 0
+for i in bs.findAll('img'):
+    if i.text:
+        alt_text_score+=1
+        alt_text_total_score+=1
+    else:
+        alt_text_total_score+=1
+
+# Creating a list of all the external links in the website.
+# We then run our defined function on each one of the lists.
+lst_links = []
+for link in bs.find_all('a'):
+    if 'href' in link.attrs:
+        lst_links.append(link.attrs['href'])      
