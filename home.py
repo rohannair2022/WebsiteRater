@@ -11,8 +11,11 @@ from urllib.error import URLError
 #This is the library for the web scraper
 from bs4 import BeautifulSoup 
 
+import re
+
 try:
-    html = urlretrieve('index.html')
+    website_name = input("Enter the website name: ")
+    html = urlopen(website_name)
     print(html.read())
 except HTTPError as e:
     print(e)
@@ -61,7 +64,17 @@ for i in bs.findAll('img'):
 
 # Creating a list of all the external links in the website.
 # We then run our defined function on each one of the lists.
-lst_links = []
-for link in bs.find_all('a'):
-    if 'href' in link.attrs:
-        lst_links.append(link.attrs['href'])      
+pages = set()
+def getLinks(pageUrl):
+    global pages
+    html = urlopen(website_name)
+    bs = BeautifulSoup(html, 'html.parser')
+    for link in bs.find_all('a', href=re.compile('*{}*',website_name)):
+        if 'href' in link.attrs:
+            if link.attrs['href'] not in pages:
+                #We have encountered a new page
+                newPage = link.attrs['href']
+                print(newPage)
+                pages.add(newPage)
+                getLinks(newPage)
+getLinks('')         
