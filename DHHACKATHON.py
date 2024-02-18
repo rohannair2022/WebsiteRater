@@ -1,3 +1,18 @@
+import requests
+#Importing the library that deals with the retrieval of info from a url online
+from urllib.request import urlopen
+#Importing the library that deals with the retrieval of info from a file locally.
+from urllib.request import urlretrieve
+
+# Throw an error when there is an issue occured while retrieving the data
+from urllib.error import HTTPError
+# Used to throw the error when the server is not found at all
+from urllib.error import URLError
+
+#This is the library for the web scraper
+from bs4 import BeautifulSoup 
+import time
+
 def alt_texts(div):
     total_image = 0
     image_with_alt = 0
@@ -164,12 +179,38 @@ def get_page_load_time(url):
     else:
         return [0, "Your website took too long to load."]
 
+def calculate_contrast_ratio(color1, color2): # value of (r, g, b) and (r, g, b)
+    def rgb_to_luminance(color):
+        r, g, b = color
+        r_srgb = r / 255.0 if r <= 10 else ((r / 255.0) ** 2.2)
+        g_srgb = g / 255.0 if g <= 10 else ((g / 255.0) ** 2.2)
+        b_srgb = b / 255.0 if b <= 10 else ((b / 255.0) ** 2.2)
+        return 0.2126 * r_srgb + 0.7152 * g_srgb + 0.0722 * b_srgb
+
+    ratio = 0
+
+    luminance1 = rgb_to_luminance(color1)
+    luminance2 = rgb_to_luminance(color2)
+
+    if luminance1 > luminance2:
+        ratio = (luminance1 + 0.05) / (luminance2 + 0.05)
+    else:
+        ratio = (luminance2 + 0.05) / (luminance1 + 0.05)
+
+    if ratio < 3:
+        return ["Poor contrast ratio between background colour and text colour based on the criterias provided by the WCAG."]
+    elif ratio >= 3 and ratio < 4.5:
+        return ["Fair contrast ratio between background colour and text colour based on the criterias provided by the WCAG."]
+    else:
+        return ["Good contrast ratio between background colour and text colour based on the criterias provided by the WCAG."]
 
 def evaluate_responsive_design(soup):
     # Check for the viewport meta tag
     viewport_meta_tag = soup.find('meta', {'name': 'viewport'})
     viewport_present = 1 if viewport_meta_tag is not None else 0
 
+    if viewport_present == 0:
+        return [(viewport_present)*10, "Your website  does not support viewport which allows for dynamic resizing whenever the window resizes."]
     # Calculate the overall rating
     return [(viewport_present)*10, "Your website supports viewport which allows for dynamic resizing whenever the window resizes."]
 
