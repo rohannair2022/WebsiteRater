@@ -11,7 +11,8 @@ def alt_texts(div):
         if img.get('alt'):
             image_with_alt += 1 
         total_image += 1
-
+    if total_image == 0:
+       return 0
     # To tell the users of the bad images
     return (image_with_alt/total_image) * 10
 
@@ -20,7 +21,6 @@ def get_page_load_time(url):
     start_time = time.time()
     response = requests.get(url)
     end_time = time.time()
-
 
     page_load_time = end_time - start_time
     
@@ -44,9 +44,10 @@ def evaluate_responsive_design(soup):
 
 # Vision: Contrast
 
+def evaluvate(url):
+  html_text = requests.get(url).text
+  soup = BeautifulSoup(html_text, "lxml")
+  return [alt_texts(soup), get_page_load_time(url), evaluate_responsive_design(soup)]
 
-# Example usage:
-url = "https://www.friv.com/"
-html_text = requests.get(url).text
-soup = BeautifulSoup(html_text, "lxml")
+
 
