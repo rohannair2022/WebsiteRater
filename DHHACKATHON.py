@@ -145,7 +145,6 @@ def footer_font_size(foot_section):
         score = 5
         return [score, "A sizable portion of texts in the footer section have their fonts on the extreme sides in comparision to the average text size in the header."]
 
-    print("foot:", score)
     return [score, "The average text size in the footer falls within the acceptable range of deviation."]
 
 
