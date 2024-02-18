@@ -163,7 +163,7 @@ def get_page_load_time(url):
     elif page_load_time > 3 and page_load_time < 4:
         return [5, "Your website's average loadtime falls above web users' average attention span when waiting for a website to load."]
     else:
-        return [5, "Your website took too long to load."]
+        return [0, "Your website took too long to load."]
 
 
 def evaluate_responsive_design(soup):
