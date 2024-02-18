@@ -180,7 +180,7 @@ def evaluate_responsive_design(soup):
 def evaluvate(url):
   html_text = requests.get(url).text
   soup = BeautifulSoup(html_text, "lxml")
-  return [alt_texts(soup), get_page_load_time(url), evaluate_responsive_design(soup)]
+  return [header_font_size(soup), body_font_size(soup), footer_font_size(soup), alt_texts(soup), get_page_load_time(url), evaluate_responsive_design(soup)]
 
 
 
