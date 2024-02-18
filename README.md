@@ -1,2 +1,2 @@
 WebsiteRater:
-Currently empty until the project is finished
+For DeerHacks 2024
