@@ -6,7 +6,7 @@ Inspiration
 Our CSC207 project last semester revolved around creating projects that keep accessibility features in mind. A broad but niche subject that surprisingly not a lot of projects focus on. We wanted to do something similar with our project.
 
 What it does
-Our projects helps rate websites based on six different features. Features range from design to accessibility and all the way to speed. Additionally we also created an RGB tracker that helps find the contrast between the font and background color and recommends if that is a good combination.
+Our project helps rate websites based on six different features. Features range from design to accessibility and all the way to speed. Additionally we also created an RGB tracker that helps find the contrast between the font and background color and recommends if that is a good combination.
 
 How we built it
 We built it using two python libraries. Beautiful Soup 4 was used for web scraping critical information and data from the website. Additionally, streamlit was used to accurately represent our data. A great front end framework that was easy to work it.
